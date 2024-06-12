@@ -15,10 +15,12 @@ import { httpServer } from "@/lib/server";
 import { useQuery } from "react-query";
 import { formatDate, formatRupiah } from "@/lib/utils";
 import { Order } from "@/interfaces/Order";
-import { listOrders } from "@/lib/fakeData";
+import { useListOrdersAPI } from "@/context/OrderContext";
 
 
 export default function Dashboard(): ReactElement {
+  
+  const listOrders = useListOrdersAPI()
   
   const getCars = async(): Promise<Car[]> => {
     const request = await httpServer.get('/api/cars')

@@ -12,10 +12,12 @@ import React from 'react'
 import { ColumnDef } from "@tanstack/react-table";
 import { formatDate, formatRupiah } from "@/lib/utils";
 import { Order } from "@/interfaces/Order";
-import { listOrders } from "@/lib/fakeData";
+import { useListOrdersAPI } from "@/context/OrderContext";
 
 
 export default function Dashboard(): ReactElement {
+  
+  const listOrders = useListOrdersAPI()
   
   const columnsListOrders = React.useMemo<ColumnDef<Order>[]>(
     () => [
