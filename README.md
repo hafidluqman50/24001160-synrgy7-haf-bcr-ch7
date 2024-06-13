@@ -28,4 +28,8 @@
 4. Or Use `npm run dev` for running React as development (IT'S UP TO YOU!)
 5. Make sure copy `.env.example` file to `.env` and fill up the `VITE_API_BASE_URL` with your backend API URL (MAKE SURE YOU FILL UP CORRECTLY OR THE REACT CAN'T BE USED!)
 6. Cek your terminal or CMD or powershell the url localhost of vite you run. If you running `npm run dev` it would show `http://localhost:5173` and for the production preview `npm run preview` it would show `http://localhost:4173`.
-7. ENJOY THE POWER OF FULLSTACK APP!
+7. For access login form superadmin `http://localhost:5173/superadmin/login`
+8. For access login form admin `http://localhost:5173/admin/login`
+9. For access login form member `http://localhost:5173/member/login`
+10. For access register form member `http://localhost:5173/member/register`
+11. ENJOY THE POWER OF FULLSTACK APP!
