@@ -16,6 +16,7 @@ import { Input } from "@/components/Input";
 import { Label } from "@/components/Label";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { UpdateFormUserAdmin } from "@/interfaces/FormUserAdmin";
+import Swal from "sweetalert2";
 
 
 export default function Edit(): ReactElement {
@@ -58,7 +59,9 @@ export default function Edit(): ReactElement {
   const { mutate, isLoading } = useMutation({
     mutationFn: updateDataUserAdmin,
     onSuccess: () => {
-      navigate('/superadmin/user-admins')
+      Swal.fire('Success Insert Car!').then(() => {
+        navigate('/superadmin/user-admins')
+      })
     },
     onError: (error) => {
       setIsError(true)

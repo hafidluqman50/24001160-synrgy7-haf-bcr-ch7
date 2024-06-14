@@ -105,8 +105,6 @@ export class CarsController {
         user_id: req.user.id
       }
       
-      console.log(reqData)
-      
       const dto: CarsStoreDTO = new CarsStoreRequest(reqData).toDTO()
       
       await this.carsService.insert(dto, file)
