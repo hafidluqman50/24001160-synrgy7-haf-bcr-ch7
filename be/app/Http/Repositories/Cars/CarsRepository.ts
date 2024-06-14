@@ -64,22 +64,32 @@ export class CarsRepository {
     }
     
     public async getListAvailable(dto: CarsAvailableDTO): Promise<Car[]> {
-      if(dto.seat != null) {
-        const dateTime = new Date(`${dto.dateRent}T${dto.timeRent}`).toISOString()
-        return await Car.query()
-            .where('start_rent', '>=', dateTime)
-            .orWhere('finish_rent', '<', dateTime)
-            .where('type_driver', dto.typeDriver)
-            .where('seat', '<=', dto.seat)
-            .where('available',1)
+      if(dto.typeDriver != null && dto.dateRent != null && dto.timeRent != null) {
+        if(dto.seat != null) {
+          const dateTime = new Date(`${dto.dateRent}T${dto.timeRent}`).toISOString()
+          return await Car.query()
+              .where('start_rent', '>=', dateTime)
+              .orWhere('finish_rent', '<', dateTime)
+              .where('type_driver', dto.typeDriver)
+              .where('seat', '<=', dto.seat)
+              .where('available',1)
+        }
+        else {
+          const dateTime = new Date(`${dto.dateRent}T${dto.timeRent}Z`).toISOString()
+          return await Car.query()
+              .where('start_rent', '>=', dateTime)
+              .orWhere('finish_rent', '<', dateTime)
+              .where('type_driver', dto.typeDriver)
+              .where('available',1)
+        }
       }
-      else {
-        const dateTime = new Date(`${dto.dateRent}T${dto.timeRent}Z`).toISOString()
+      else if(dto.name != null) {
         return await Car.query()
-            .where('start_rent', '>=', dateTime)
-            .orWhere('finish_rent', '<', dateTime)
-            .where('type_driver', dto.typeDriver)
+            .whereILike('name', `%${dto.name}%`)
             .where('available',1)
+      } else {
+        return await Car.query()
+              .where('available',1)
       }
     }
 }

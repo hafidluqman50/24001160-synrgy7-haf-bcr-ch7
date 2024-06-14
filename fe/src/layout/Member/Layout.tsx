@@ -6,7 +6,15 @@ import Footer from "./Footer";
 import { Sidebar, SidebarMenu } from "@/components/Sidebar";
 import { Home, Truck } from "lucide-react";
 
-export default function Layout({children, sidebar}: PropsWithChildren<{sidebar:string}>): ReactElement {
+type LayoutProps = {
+  sidebar: string
+  setFunc?: CallableFunction | undefined
+  refetch?: CallableFunction | undefined
+}
+
+export default function Layout({
+  children, sidebar, setFunc = undefined, refetch = undefined
+}: PropsWithChildren<LayoutProps>): ReactElement {
   
   const fetchCurrentUser = async({
     queryKey
@@ -21,7 +29,7 @@ export default function Layout({children, sidebar}: PropsWithChildren<{sidebar:s
     }
   }
   
-  const { isLoading, isError, data, error, refetch } = useQuery({
+  const { isLoading, isError, data, error } = useQuery({
     queryKey: ['currentUser'],
     queryFn: fetchCurrentUser
   })
@@ -49,7 +57,10 @@ export default function Layout({children, sidebar}: PropsWithChildren<{sidebar:s
             </Sidebar>
           </div>
           <div className="col-md-11 p-0">
-            <Header />
+            <Header
+              setFunc={setFunc}
+              refetch={refetch}
+            />
             {children}
             <Footer />
           </div>

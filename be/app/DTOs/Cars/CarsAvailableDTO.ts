@@ -1,11 +1,13 @@
 
 export class CarsAvailableDTO {
-  public typeDriver: string
-  public dateRent: string
-  public timeRent: string
-  public seat: number|null
+  public name?: string|null
+  public typeDriver?: string|null
+  public dateRent?: string|null
+  public timeRent?: string|null
+  public seat?: number|null
   
   constructor(data: any) {
+    this.name       = data.name
     this.typeDriver = data.type_driver
     this.dateRent   = data.date_rent
     this.timeRent   = data.time_rent

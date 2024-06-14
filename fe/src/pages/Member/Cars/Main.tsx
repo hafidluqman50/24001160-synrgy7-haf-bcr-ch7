@@ -1,7 +1,7 @@
 import { httpServer } from "@/lib/server";
 import { useQuery } from "react-query";
 import Layout from "@/layout/Member/Layout";
-import { ReactElement } from "react";
+import { ReactElement, useState } from "react";
 import { BreadCrumb,BreadCrumbMenu } from "@/components/Breadcrumb";
 import { 
   MainSection, 
@@ -16,13 +16,19 @@ import { Link } from "react-router-dom";
 
 export default function Main(): ReactElement {
   
+  const [search, setSearch] = useState<string>('')
+  
   const fetchCars = async(): Promise<{cars:Car[]}> => {
-    const request = await httpServer.get('/api/cars/list-available')
+    const request = await httpServer.get('/api/cars/list-available', {
+      params:{
+        search
+      }
+    })
     
     return request.data
   }
   
-  const { isLoading, data } = useQuery({
+  const { isLoading, data, refetch } = useQuery({
     queryKey: ['carsAvailable'],
     queryFn: fetchCars
   })
@@ -32,6 +38,8 @@ export default function Main(): ReactElement {
   return(
     <Layout
       sidebar="cars"
+      setFunc={setSearch}
+      refetch={refetch}
     >
       <MainSection>
         <MainSectionMenuGroup title="CARS">

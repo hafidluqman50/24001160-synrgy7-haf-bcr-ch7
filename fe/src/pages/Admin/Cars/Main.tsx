@@ -1,7 +1,7 @@
 import { httpServer } from "@/lib/server";
 import { useQuery } from "react-query";
 import Layout from "@/layout/Admin/Layout";
-import { ReactElement } from "react";
+import { ReactElement, useState } from "react";
 import { BreadCrumb,BreadCrumbMenu } from "@/components/Breadcrumb";
 import { 
   MainSection, 
@@ -18,8 +18,14 @@ import Swal from "sweetalert2";
 
 export default function Main(): ReactElement {
   
+  const [search, setSearch] = useState<string>('')
+  
   const fetchCars = async(): Promise<{cars:Car[]}> => {
-    const request = await httpServer.get('/api/cars')
+    const request = await httpServer.get('/api/cars',{
+      params:{
+        search
+      }
+    })
     
     return request.data.data
   }
@@ -54,6 +60,8 @@ export default function Main(): ReactElement {
   return(
     <Layout
       sidebar="cars"
+      setFunc={setSearch}
+      refetch={refetch}
     >
       <MainSection>
         <MainSectionMenuGroup title="CARS">
