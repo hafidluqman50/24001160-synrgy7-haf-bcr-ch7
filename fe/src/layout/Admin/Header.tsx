@@ -2,7 +2,14 @@ import { Input } from "@/components/Input";
 import { ReactElement } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 
-export default function Header(): ReactElement {
+type HeaderProps = {
+  setFunc?: CallableFunction | undefined
+  refetch?: CallableFunction | undefined
+}
+
+export default function Header({
+  setFunc = undefined, refetch = undefined
+}: HeaderProps): ReactElement {
   
   const navigate: NavigateFunction = useNavigate()
   
@@ -22,9 +29,17 @@ export default function Header(): ReactElement {
                 }} />
               </div>
               <div className="w-50 d-flex">
-                <Input type="search" className="rounded-0" />
+                <Input type="search" className="rounded-0" onChange={(event) => {
+                  if(setFunc !== undefined) {
+                    setFunc(event.target.value)
+                  }
+                }} />
                 <button className="btn rounded-0 btn-outline-primary" style={{
                   marginRight:'2%'
+                }} onClick={() => {
+                  if(refetch !== undefined) {
+                    refetch()
+                  }
                 }}>Search</button>
                 <div className="dropdown d-flex">
                   <div className="bg--dark-blue-01 rounded-5 text-center p-1" style={{

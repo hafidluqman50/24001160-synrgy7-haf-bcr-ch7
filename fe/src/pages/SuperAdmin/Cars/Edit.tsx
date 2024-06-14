@@ -16,6 +16,7 @@ import { Input } from "@/components/Input";
 import { Label } from "@/components/Label";
 import { useForm } from "react-hook-form";
 import { dateTime } from "@/lib/utils";
+import Swal from "sweetalert2";
 
 
 export default function Edit(): ReactElement {
@@ -55,7 +56,9 @@ export default function Edit(): ReactElement {
   const { mutate, isLoading } = useMutation({
     mutationFn: updateDataCar,
     onSuccess: (data) => {
-      navigate('/superadmin/cars')
+      Swal.fire('Success Insert Car!').then(() => {
+          navigate('/superadmin/cars')
+        })
     },
     onError: (error) => {
       setIsError(true)

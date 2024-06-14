@@ -59,7 +59,7 @@ export class CarsService {
       
       dto.car_id = insertGetId.id
       
-      await this.carsRepository.insertLogs(dto)
+      await this.carLogRepository.insertLogs(dto)
       
     } catch(error) {
       if(error instanceof Exception) {
@@ -91,7 +91,7 @@ export class CarsService {
       
       dto.car_id = id
       
-      await this.carsRepository.insertLogs(dto)
+      await this.carLogRepository.insertLogs(dto)
       
     } catch(error) {
       if(error instanceof Exception) {
@@ -109,7 +109,7 @@ export class CarsService {
       
       await this.carsRepository.delete(id)
       
-      await this.carsRepository.insertLogs(dto)
+      await this.carLogRepository.insertLogs(dto)
     } catch(error) {
       if(error instanceof Exception) {
         throw new Exception(error.message, error.statusCode, {})

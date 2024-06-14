@@ -1,7 +1,7 @@
 import { httpServer } from "@/lib/server";
 import { useQuery } from "react-query";
 import Layout from "@/layout/Admin/Layout";
-import { ReactElement } from "react";
+import { ReactElement, useState } from "react";
 import { BreadCrumb,BreadCrumbMenu } from "@/components/Breadcrumb";
 import { 
   MainSection, 
@@ -13,12 +13,19 @@ import { formatDate, formatRupiah } from "@/lib/utils";
 import { Car } from "@/interfaces/Car";
 import { Link } from "react-router-dom";
 import { isAxiosError } from "axios";
+import Swal from "sweetalert2";
 
 
 export default function Main(): ReactElement {
   
+  const [search, setSearch] = useState<string>('')
+  
   const fetchCars = async(): Promise<{cars:Car[]}> => {
-    const request = await httpServer.get('/api/cars')
+    const request = await httpServer.get('/api/cars',{
+      params:{
+        search
+      }
+    })
     
     return request.data.data
   }
@@ -30,10 +37,19 @@ export default function Main(): ReactElement {
   
   const deleteCar = async(id: number): Promise<void> => {
     try {
-      if(window.confirm('Yakin Hapus Data?')) {
-        await httpServer.delete(`/api/cars/${id}`)
-      }
-      refetch()
+      const swalAlert = await Swal.fire({
+          title: 'Yakin Hapus Data ?',
+          showDenyButton: true,
+          confirmButtonText: 'Ya',
+          denyButtonText: 'Tidak',
+        })
+        if(swalAlert.isConfirmed) {
+            await httpServer.delete(`/api/cars/${id}`)
+            refetch()
+            Swal.fire('Data Terhapus!')
+        } else {
+          Swal.fire('Data Batal Terhapus!')
+        }
     } catch(error) {
       if(isAxiosError(error)) {
         console.log(error.response?.data.message)
@@ -44,6 +60,8 @@ export default function Main(): ReactElement {
   return(
     <Layout
       sidebar="cars"
+      setFunc={setSearch}
+      refetch={refetch}
     >
       <MainSection>
         <MainSectionMenuGroup title="CARS">

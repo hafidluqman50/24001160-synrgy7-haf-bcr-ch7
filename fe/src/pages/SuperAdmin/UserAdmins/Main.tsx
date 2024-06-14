@@ -14,6 +14,8 @@ import { User } from "@/interfaces/User";
 import { TableTanstack } from "@/components/Table";
 import React from 'react'
 import { ColumnDef } from "@tanstack/react-table";
+import Swal from "sweetalert2";
+import { isAxiosError } from "axios";
 
 export default function Main(): ReactElement {
   
@@ -23,10 +25,32 @@ export default function Main(): ReactElement {
     return request.data.data.users
   }
   
-  const { isLoading, data } = useQuery({
+  const { isLoading, data, refetch } = useQuery({
     queryKey: ['fetchUserAdmins'],
     queryFn: fetchUserAdmins
   })
+  
+  const deleteUserAdmin = async(id: number): Promise<void> => {
+    try {
+        const swalAlert = await Swal.fire({
+          title: 'Yakin Hapus Data ?',
+          showDenyButton: true,
+          confirmButtonText: 'Ya',
+          denyButtonText: 'Tidak',
+        })
+        if(swalAlert.isConfirmed) {
+            await httpServer.delete(`/api/user-admin/${id}`)
+            refetch()
+            Swal.fire('Data Terhapus!')
+        } else {
+          Swal.fire('Data Batal Terhapus!')
+        }
+      } catch(error) {
+        if(isAxiosError(error)) {
+          console.log(error.response?.data.message)
+        }
+      }
+  }
   
   const columns = React.useMemo<ColumnDef<User>[]>(
     () => [
@@ -56,7 +80,7 @@ export default function Main(): ReactElement {
             <Link to={`/superadmin/user-admins/edit/${info.getValue()}`} className="m-1">
               <button className="btn btn-success rounded-0"><i className="fas fa-pencil"></i> Edit </button>
             </Link>
-            <button className="btn btn-danger rounded-0 m-1"><i className="fas fa-trash"></i> Hapus </button>
+            <button className="btn btn-danger rounded-0 m-1" onClick={() => deleteUserAdmin(Number(info.getValue()))}><i className="fas fa-trash"></i> Hapus </button>
           </>
         ),
       }

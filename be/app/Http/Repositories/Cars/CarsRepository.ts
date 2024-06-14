@@ -4,7 +4,6 @@ import { CarsIndexDTO } from '@DTOs/Cars/CarsIndexDTO'
 import { CarsStoreDTO } from '@DTOs/Cars/CarsStoreDTO'
 import { CarsUpdateDTO } from '@DTOs/Cars/CarsUpdateDTO'
 import { Car } from '@Models/Car'
-import { CarLog } from '@Models/CarLog'
 import { raw } from 'objection'
 
 export class CarsRepository {
@@ -64,33 +63,33 @@ export class CarsRepository {
       })
     }
     
-    public async insertLogs(dto: CarsStoreDTO | CarsUpdateDTO | CarsDeleteDTO): Promise<CarLog> {
-      return await CarLog.query().insert({
-        car_id: dto.car_id,
-        user_id: dto.user_id,
-        log_time: dto.log_time,
-        type_action: dto.type_action
-      })
-    }
-    
     public async getListAvailable(dto: CarsAvailableDTO): Promise<Car[]> {
-      if(dto.seat != null) {
-        const dateTime = new Date(`${dto.dateRent}T${dto.timeRent}`).toISOString()
-        console.log(dateTime)
-        return await Car.query()
-            .where('start_rent', '>=', dateTime)
-            .orWhere('finish_rent', '<', dateTime)
-            .where('type_driver', dto.typeDriver)
-            .where('seat', '>=', dto.seat)
-            .where('available',1)
+      if(dto.typeDriver != null && dto.dateRent != null && dto.timeRent != null) {
+        if(dto.seat != null) {
+          const dateTime = new Date(`${dto.dateRent}T${dto.timeRent}`).toISOString()
+          return await Car.query()
+              .where('start_rent', '>=', dateTime)
+              .orWhere('finish_rent', '<', dateTime)
+              .where('type_driver', dto.typeDriver)
+              .where('seat', '<=', dto.seat)
+              .where('available',1)
+        }
+        else {
+          const dateTime = new Date(`${dto.dateRent}T${dto.timeRent}Z`).toISOString()
+          return await Car.query()
+              .where('start_rent', '>=', dateTime)
+              .orWhere('finish_rent', '<', dateTime)
+              .where('type_driver', dto.typeDriver)
+              .where('available',1)
+        }
       }
-      else {
-        const dateTime = new Date(`${dto.dateRent}T${dto.timeRent}Z`).toISOString()
+      else if(dto.name != null) {
         return await Car.query()
-            .where('start_rent', '>=', dateTime)
-            .orWhere('finish_rent', '<', dateTime)
-            .where('type_driver', dto.typeDriver)
+            .whereILike('name', `%${dto.name}%`)
             .where('available',1)
+      } else {
+        return await Car.query()
+              .where('available',1)
       }
     }
 }

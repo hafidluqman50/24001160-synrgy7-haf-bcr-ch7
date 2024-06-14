@@ -16,6 +16,7 @@ import { Input } from "@/components/Input";
 import { Label } from "@/components/Label";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { CreateFormUserAdmin } from "@/interfaces/FormUserAdmin";
+import Swal from "sweetalert2";
 
 
 export default function Create(): ReactElement {
@@ -43,7 +44,9 @@ export default function Create(): ReactElement {
   const { mutate, isLoading } = useMutation({
     mutationFn: createDataUserAdmin,
     onSuccess: () => {
-      navigate('/superadmin/user-admins')
+      Swal.fire('Success Insert User Admin!').then(() => {
+        navigate('/superadmin/user-admins')
+      })
     },
     onError: (error) => {
       setIsError(true)

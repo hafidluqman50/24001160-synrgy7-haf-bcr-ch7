@@ -7,8 +7,8 @@ class CarLog extends Model {
   static tableName = 'car_logs'
   
   id!: number;
-  user_id!:number;
   car_id!:number;
+  user_id!:number;
   log_time!:Date | string;
   type_action!: string;
   

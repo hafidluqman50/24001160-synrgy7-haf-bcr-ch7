@@ -105,8 +105,6 @@ export class CarsController {
         user_id: req.user.id
       }
       
-      console.log(reqData)
-      
       const dto: CarsStoreDTO = new CarsStoreRequest(reqData).toDTO()
       
       await this.carsService.insert(dto, file)
@@ -215,6 +213,7 @@ export class CarsController {
     try {
       
       const reqData: any = {
+        name: req.query.search,
         type_driver: req.query.type_driver,
         date_rent: req.query.date_rent,
         time_rent: req.query.time_rent,

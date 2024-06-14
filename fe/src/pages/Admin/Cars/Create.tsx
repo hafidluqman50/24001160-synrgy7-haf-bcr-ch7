@@ -16,6 +16,7 @@ import { Input } from "@/components/Input";
 import { Label } from "@/components/Label";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { CreateFormCar } from "@/interfaces/FormCar";
+import Swal from "sweetalert2";
 
 
 export default function Create(): ReactElement {
@@ -43,7 +44,9 @@ export default function Create(): ReactElement {
   const { mutate, isLoading } = useMutation({
     mutationFn: createDataCar,
     onSuccess: () => {
-      navigate('/admin/cars')
+      Swal.fire('Success Insert Car!').then(() => {
+        navigate('/superadmin/cars')
+      })
     },
     onError: (error) => {
       setIsError(true)

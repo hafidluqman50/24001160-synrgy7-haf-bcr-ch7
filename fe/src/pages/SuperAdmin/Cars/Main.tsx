@@ -13,6 +13,7 @@ import { formatDate, formatRupiah } from "@/lib/utils";
 import { Car } from "@/interfaces/Car";
 import { Link } from "react-router-dom";
 import { isAxiosError } from "axios";
+import Swal from "sweetalert2";
 
 
 export default function Main(): ReactElement {
@@ -36,10 +37,19 @@ export default function Main(): ReactElement {
   
   const deleteCar = async(id: number): Promise<void> => {
     try {
-      if(window.confirm('Yakin Hapus Data?')) {
-        await httpServer.delete(`/api/cars/${id}`)
+      const swalAlert = await Swal.fire({
+        title: 'Yakin Hapus Data ?',
+        showDenyButton: true,
+        confirmButtonText: 'Ya',
+        denyButtonText: 'Tidak',
+      })
+      if(swalAlert.isConfirmed) {
+          await httpServer.delete(`/api/cars/${id}`)
+          refetch()
+          Swal.fire('Data Terhapus!')
+      } else {
+        Swal.fire('Data Batal Terhapus!')
       }
-      refetch()
     } catch(error) {
       if(isAxiosError(error)) {
         console.log(error.response?.data.message)
