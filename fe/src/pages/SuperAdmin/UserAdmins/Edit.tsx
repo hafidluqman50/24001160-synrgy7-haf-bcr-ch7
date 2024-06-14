@@ -59,7 +59,7 @@ export default function Edit(): ReactElement {
   const { mutate, isLoading } = useMutation({
     mutationFn: updateDataUserAdmin,
     onSuccess: () => {
-      Swal.fire('Success Insert Car!').then(() => {
+      Swal.fire('Success Insert User Admin!').then(() => {
         navigate('/superadmin/user-admins')
       })
     },

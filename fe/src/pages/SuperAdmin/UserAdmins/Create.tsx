@@ -44,7 +44,7 @@ export default function Create(): ReactElement {
   const { mutate, isLoading } = useMutation({
     mutationFn: createDataUserAdmin,
     onSuccess: () => {
-      Swal.fire('Success Insert Car!').then(() => {
+      Swal.fire('Success Insert User Admin!').then(() => {
         navigate('/superadmin/user-admins')
       })
     },
