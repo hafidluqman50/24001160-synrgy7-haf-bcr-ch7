@@ -10,8 +10,8 @@
 4. Next step use command `npm run compile` to compile TypeScript into JavaScript
 5. Make sure copy `.env.example` file to `.env` and fill up the correct value of your PostgreSQL connection!
 6. Run this command `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"` and copy the value into your `.env` file in `JWT_SECRET`
-7. Run command `npx knex migration:latest` to create table via migration
-8. Run command `npx knex seed:up` to fill up table with data seeder!
+7. Run command `npx knex migrate:latest` to create table via migration
+8. Run command `npx knex seed:run` to fill up table with data seeder!
 9. For final step run command `npm run start`
 10. Make sure database already connected to your project like this
    
